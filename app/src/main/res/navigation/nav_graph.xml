@@ -6,20 +6,28 @@
     app:startDestination="@id/loginFragment">
     <fragment
         android:id="@+id/listFragment"
-        android:name="ru.spbstu.edu.fogezz.moonsoon.ListFragment"
+        android:name="ru.spbstu.edu.fogezz.moonsoon.list.ListFragment"
         android:label="ListFragment"
-        tools:layout="@layout/fragment_list">
-        <argument
-            android:name="id"
-            app:argType="integer" />
-    </fragment>
+        tools:layout="@layout/fragment_list"/>
     <fragment
         android:id="@+id/loginFragment"
-        android:name="ru.spbstu.edu.fogezz.moonsoon.LoginFragment"
+        android:name="ru.spbstu.edu.fogezz.moonsoon.login.LoginFragment"
         android:label="LoginFragment"
         tools:layout="@layout/fragment_login">
         <action
             android:id="@+id/action_loginFragment_to_listFragment"
             app:destination="@id/listFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_chatFragment"
+            app:destination="@id/chatFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/chatFragment"
+        android:name="ru.spbstu.edu.fogezz.moonsoon.ChatFragment"
+        android:label="fragment_chat"
+        tools:layout="@layout/fragment_chat" >
+        <argument
+            android:name="user"
+            app:argType="ru.spbstu.edu.fogezz.moonsoon.network.User" />
     </fragment>
 </navigation>

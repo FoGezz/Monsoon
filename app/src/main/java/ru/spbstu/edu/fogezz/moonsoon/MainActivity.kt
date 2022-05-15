@@ -26,17 +26,10 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        editText = findViewById(R.id.editText)
-        listView = findViewById(R.id.listView)
     }
 
      fun client(): Socket = runBlocking {
          return@runBlocking aSocket(ActorSelectorManager(Dispatchers.IO)).tcp()
              .connect("localhost", 8081)
-    }
-
-    fun sendButton(view: View?) {
-        val date = Date()
-        editText!!.setText("")
     }
 }

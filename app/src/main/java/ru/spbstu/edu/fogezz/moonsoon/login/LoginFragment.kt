@@ -1,10 +1,11 @@
-package ru.spbstu.edu.fogezz.moonsoon
+package ru.spbstu.edu.fogezz.moonsoon.login
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*
@@ -22,11 +23,20 @@ class LoginFragment : Fragment() {
     ): View {
         // Inflate the layout for this fragment
         val binding = FragmentLoginBinding.inflate(inflater)
+        val viewModel: LoginViewModel by viewModels()
 
         binding.buttonLoginConnect.setOnClickListener{
-            val isLogged = requestLogin()
-            if(isLogged) {
-                findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToListFragment(10))
+            viewModel.enter(binding.edittextLoginUserId.text.toString())
+        }
+        viewModel.isLogged.observe(viewLifecycleOwner){
+            it?: return@observe
+
+            if(it) {
+                findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToListFragment())
+//                findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToChatFragment(
+//                    User("coolest")
+//                ))
+                viewModel.loginNavigated()
             }
         }
 
