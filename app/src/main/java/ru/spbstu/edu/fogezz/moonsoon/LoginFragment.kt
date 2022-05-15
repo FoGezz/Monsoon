@@ -35,7 +35,7 @@ class LoginFragment : Fragment() {
 
     private fun requestLogin(): Boolean = runBlocking {
         val client = HttpClient(CIO)
-        val response: HttpResponse = client.request("localhost/")
+        val response: HttpResponse = client.request("http://10.0.2.2:8000/enter?nickname=FoGezz")
         // Configure request parameters exposed by HttpRequestBuilder
 
         return@runBlocking response.status.isSuccess()
