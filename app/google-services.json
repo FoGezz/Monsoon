@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "214821352985",
+    "firebase_url": "https://monsoon-7104f-default-rtdb.europe-west1.firebasedatabase.app/",
+    "project_id": "monsoon-7104f",
+    "storage_bucket": "monsoon-7104f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:214821352985:android:1ab538994eb068e5dfdc88",
+        "android_client_info": {
+          "package_name": "ru.spbstu.edu.fogezz.moonsoon"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "214821352985-q6l64pgcv60innp3d835gp812oe32e2i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBMXiEQZ8cgczvZZDiUO84Wz5ZTSZ-cUaA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "214821352985-q6l64pgcv60innp3d835gp812oe32e2i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
