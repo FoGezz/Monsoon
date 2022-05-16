@@ -9,7 +9,7 @@
         android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_height="500dp"
-        tools:listitem="@layout/fragment_login" />
+        tools:listitem="@android:layout/simple_list_item_single_choice" />
 
     <EditText
         android:id="@+id/editText"
@@ -21,7 +21,8 @@
         android:ems="10"
         android:gravity="start|top"
         android:hint="@string/type_your_message_here"
-        android:inputType="textMultiLine" />
+        android:inputType="textMultiLine"
+        android:minHeight="48dp" />
 
     <Button
         android:id="@+id/button"
