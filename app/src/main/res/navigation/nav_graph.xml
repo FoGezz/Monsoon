@@ -8,7 +8,13 @@
         android:id="@+id/listFragment"
         android:name="ru.spbstu.edu.fogezz.moonsoon.list.ListFragment"
         android:label="ListFragment"
-        tools:layout="@layout/fragment_list"/>
+        tools:layout="@layout/fragment_list">
+        <action
+            android:id="@+id/action_listFragment_to_chatFragment"
+            app:destination="@id/chatFragment" />
+        <argument android:name="nickname"
+            app:argType="string" />
+    </fragment>
     <fragment
         android:id="@+id/loginFragment"
         android:name="ru.spbstu.edu.fogezz.moonsoon.login.LoginFragment"
@@ -17,17 +23,17 @@
         <action
             android:id="@+id/action_loginFragment_to_listFragment"
             app:destination="@id/listFragment" />
-        <action
-            android:id="@+id/action_loginFragment_to_chatFragment"
-            app:destination="@id/chatFragment" />
     </fragment>
     <fragment
         android:id="@+id/chatFragment"
-        android:name="ru.spbstu.edu.fogezz.moonsoon.ChatFragment"
+        android:name="ru.spbstu.edu.fogezz.moonsoon.chat.ChatFragment"
         android:label="fragment_chat"
         tools:layout="@layout/fragment_chat" >
+        <argument android:name="nickname"
+            app:argType="string" />
         <argument
             android:name="user"
             app:argType="ru.spbstu.edu.fogezz.moonsoon.network.User" />
+
     </fragment>
 </navigation>

@@ -2,7 +2,6 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/loginConstraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -11,38 +10,41 @@
 
     <EditText
         android:id="@+id/edittext_login_user_id"
-        android:layout_width="match_parent"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:hint="Nickname"
+        android:gravity="center_horizontal|center_vertical"
+        android:hint="@string/nickname_hint"
         android:imeOptions="actionDone"
-        android:inputType="textVisiblePassword"
+        android:inputType="text"
+        android:minHeight="48dp"
         android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="TouchTargetSizeCheck"
-        tools:layout_editor_absoluteX="0dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/button_login_connect"
         style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="44dp"
         android:background="#774df2"
         android:stateListAnimator="@null"
-        android:text="Connect"
-        app:layout_constraintTop_toBottomOf="@+id/edittext_login_user_id"
-        tools:layout_editor_absoluteX="16dp" />
+        android:text="@string/connect"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edittext_login_user_id" />
 
-    <EditText
+    <TextView
         android:id="@+id/editTextTextPersonName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
         android:fontFamily="@font/bebas_neue"
-        android:inputType="textPersonName"
-        android:text="MONSOON"
+        android:text="@string/app_name"
         android:textAlignment="center"
+        android:textAllCaps="true"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/edittext_login_user_id"
         app:layout_constraintEnd_toEndOf="parent"

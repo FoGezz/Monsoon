@@ -25,14 +25,19 @@ class LoginFragment : Fragment() {
         val binding = FragmentLoginBinding.inflate(inflater)
         val viewModel: LoginViewModel by viewModels()
 
-        binding.buttonLoginConnect.setOnClickListener{
-            viewModel.enter(binding.edittextLoginUserId.text.toString())
+        binding.buttonLoginConnect.setOnClickListener {
+            val nickname = binding.edittextLoginUserId.text.toString().trim()
+            if (nickname.isNotBlank())
+                viewModel.enter(nickname)
         }
-        viewModel.isLogged.observe(viewLifecycleOwner){
-            it?: return@observe
+        viewModel.isLogged.observe(viewLifecycleOwner) {
+            it ?: return@observe
 
-            if(it) {
-                findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToListFragment())
+            if (it) {
+                val nickname = binding.editTextTextPersonName.text.toString().trim()
+                findNavController().navigate(
+                    LoginFragmentDirections.actionLoginFragmentToListFragment(nickname)
+                )
 //                findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToChatFragment(
 //                    User("coolest")
 //                ))

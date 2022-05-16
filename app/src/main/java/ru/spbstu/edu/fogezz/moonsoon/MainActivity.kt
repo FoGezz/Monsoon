@@ -28,8 +28,5 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
     }
 
-     fun client(): Socket = runBlocking {
-         return@runBlocking aSocket(ActorSelectorManager(Dispatchers.IO)).tcp()
-             .connect("localhost", 8081)
-    }
+
 }
