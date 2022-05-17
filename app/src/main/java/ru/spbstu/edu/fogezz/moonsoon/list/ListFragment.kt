@@ -38,7 +38,7 @@ class ListFragment : Fragment() {
             it ?: return@observe
 
             Log.d(javaClass.simpleName, it.joinToString())
-            adapter.addAll(it.sortedBy { it.nickname })
+            adapter.addAll(it)
         }
 
         return binding.root

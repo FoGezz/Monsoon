@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import ru.spbstu.edu.fogezz.moonsoon.databinding.FragmentChatBinding
+import java.security.KeyPairGenerator
+import javax.crypto.Cipher
 
 class ChatFragment : Fragment() {
 
@@ -20,8 +22,10 @@ class ChatFragment : Fragment() {
         val user = args.user
         val nickname = args.nickname
         val binding = FragmentChatBinding.inflate(inflater)
-        val viewModel: ChatViewModel by viewModels { ChatViewModelFactory(nickname) }
+        val adapter = ChatAdapter(requireContext())
+        val viewModel: ChatViewModel by viewModels { ChatViewModelFactory(nickname, user) }
 
+        binding.chatLV.adapter = adapter
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
@@ -30,7 +34,21 @@ class ChatFragment : Fragment() {
             if (!it) Toast.makeText(context, "Мы внутри", Toast.LENGTH_SHORT).show()
         }
 
-//        binding.tw.text = user.toString()
+        viewModel.messages.observe(viewLifecycleOwner) {
+            adapter.clear()
+            it?.let {
+                adapter.addAll(it)
+            }
+        }
+
+        binding.sendBtn.setOnClickListener{
+            val text = binding.messageET.text.toString().trim()
+            if(text.isNotBlank()) {
+                viewModel.sendText(text)
+//                KeyPairGenerator.getInstance("RSA").genKeyPair()
+                binding.messageET.setText("")
+            }
+        }
 
         return binding.root
     }

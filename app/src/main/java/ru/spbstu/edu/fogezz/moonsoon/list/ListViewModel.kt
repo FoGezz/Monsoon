@@ -19,6 +19,7 @@ class ListViewModel : ViewModel() {
     }
 
     suspend fun getList() {
-        list.value = withContext(Dispatchers.IO) { Network.api.list() }.body()
+        list.value =
+            withContext(Dispatchers.IO) { Network.api.list() }.body()?.sortedBy { it.nickname }
     }
 }

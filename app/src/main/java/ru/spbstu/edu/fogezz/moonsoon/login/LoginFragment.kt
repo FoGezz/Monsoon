@@ -34,7 +34,7 @@ class LoginFragment : Fragment() {
             it ?: return@observe
 
             if (it) {
-                val nickname = binding.editTextTextPersonName.text.toString().trim()
+                val nickname = binding.edittextLoginUserId.text.toString().trim()
                 findNavController().navigate(
                     LoginFragmentDirections.actionLoginFragmentToListFragment(nickname)
                 )

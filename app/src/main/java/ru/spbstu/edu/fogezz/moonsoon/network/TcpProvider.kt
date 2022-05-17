@@ -5,9 +5,15 @@ import io.ktor.network.selector.*
 import io.ktor.network.sockets.*
 import io.ktor.utils.io.*
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 
 object TcpProvider {
-    private lateinit var client: Socket
+    private var client: Socket = runBlocking {
+        withContext(Dispatchers.IO) {
+            aSocket(ActorSelectorManager(Dispatchers.IO)).tcp().connect("10.0.2.2", 9002)
+        }
+    }
     val readSock = client.openReadChannel()
     private val writeSock = client.openWriteChannel(true)
 
@@ -20,9 +26,14 @@ object TcpProvider {
         writeUtf8("iam: $nickname\n")
     }
 
-    suspend fun msg(from: String, to: String, msg: String) {
-        writeUtf8("msg: $from|$to|$msg")
+    suspend fun to(nickname: String) {
+        writeUtf8("rcpt: $nickname\n")
     }
+
+    suspend fun msg(msg: String) {
+        writeUtf8("msg: $msg")
+    }
+
 
     suspend fun awaitEstablishing() {
         do {
