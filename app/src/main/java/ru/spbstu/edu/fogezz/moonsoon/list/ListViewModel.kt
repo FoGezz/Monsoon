@@ -3,23 +3,30 @@ package ru.spbstu.edu.fogezz.moonsoon.list
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import ru.spbstu.edu.fogezz.moonsoon.network.Network
 import ru.spbstu.edu.fogezz.moonsoon.network.User
 
-class ListViewModel : ViewModel() {
+class ListViewModel(nickname: String) : ViewModel() {
     val list = MutableLiveData<List<User>>()
-
+    private lateinit var deffered: Deferred<Unit>
     init {
         viewModelScope.launch {
-            getList()
+            deffered = async {
+                while (true)
+                    getList(nickname)
+            }
         }
     }
 
-    suspend fun getList() {
-        list.value =
-            withContext(Dispatchers.IO) { Network.api.list() }.body()?.sortedBy { it.nickname }
+    private suspend fun getList(nickname: String) {
+        val list = withContext(Dispatchers.IO) { Network.api.list() }.body() ?: emptyList()
+        this.list.value = list.filterNot { it.nickname == nickname }.sortedBy { it.nickname }
+    }
+
+    fun stopUpdate(){
+        viewModelScope.launch {
+            deffered.cancelAndJoin()
+        }
     }
 }

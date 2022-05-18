@@ -9,13 +9,19 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 
 object TcpProvider {
+    private const val HOSTNAME = "10.0.2.2"
+    private const val PORT = 9002
+
     private var client: Socket = runBlocking {
         withContext(Dispatchers.IO) {
-            aSocket(ActorSelectorManager(Dispatchers.IO)).tcp().connect("10.0.2.2", 9002)
+            aSocket(ActorSelectorManager(Dispatchers.IO)).tcp().connect(HOSTNAME, PORT)
         }
     }
+
     val readSock = client.openReadChannel()
     private val writeSock = client.openWriteChannel(true)
+    val isOpenForReading: Boolean
+        get() = !readSock.isClosedForRead
 
     private suspend fun writeUtf8(str: String) {
         writeSock.writeStringUtf8("$str\n")
@@ -34,6 +40,17 @@ object TcpProvider {
         writeUtf8("msg: $msg")
     }
 
+    suspend fun openConnection(from: String, rcpt: String) {
+//        connectClient()
+        introduce(from)
+        to(rcpt)
+        awaitEstablishing()
+    }
+
+    suspend fun waitString(): String? {
+        readSock.awaitContent()
+        return readSock.readUTF8Line()
+    }
 
     suspend fun awaitEstablishing() {
         do {
@@ -44,10 +61,14 @@ object TcpProvider {
 
     suspend fun connectClient() {
         try {
-            client = aSocket(ActorSelectorManager(Dispatchers.IO)).tcp().connect("10.0.2.2", 9002)
+            client = aSocket(ActorSelectorManager(Dispatchers.IO)).tcp().connect(HOSTNAME, PORT)
         } catch (e: Exception) {
             Log.d(javaClass.simpleName, e.message!!)
             error("Unable to connect: ${e.message}")
         }
+    }
+
+    fun closeConnection() {
+        client.close()
     }
 }

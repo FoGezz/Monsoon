@@ -25,20 +25,22 @@ class ListFragment : Fragment() {
         // Inflate the layout for this fragment
         val nickname = ListFragmentArgs.fromBundle(requireArguments()).nickname
         val binding = FragmentListBinding.inflate(inflater)
-        val viewModel: ListViewModel by viewModels()
+        val viewModel: ListViewModel by viewModels {ListViewModelFactory(nickname)}
 
         val adapter = CoolAdapter(requireContext())
         binding.listView.adapter = adapter
         binding.listView.setOnItemClickListener { parent, view, position, id ->
             val user = viewModel.list.value?.get(position) ?: error("No users UwU")
             findNavController().navigate(ListFragmentDirections.actionListFragmentToChatFragment(nickname,user))
+            viewModel.stopUpdate()
         }
 
         viewModel.list.observe(viewLifecycleOwner) {
-            it ?: return@observe
-
-            Log.d(javaClass.simpleName, it.joinToString())
-            adapter.addAll(it)
+            adapter.clear()
+            it?.let { list->
+                Log.d(javaClass.simpleName, list.joinToString())
+                adapter.addAll(list)
+            }
         }
 
         return binding.root

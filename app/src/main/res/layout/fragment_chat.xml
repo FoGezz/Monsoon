@@ -30,37 +30,53 @@
         <ListView
             android:id="@+id/chatLV"
             android:layout_width="match_parent"
-            android:divider="@null"
             android:layout_height="0dp"
+            android:layout_marginBottom="10dp"
+            android:divider="@null"
             android:visibility="@{viewModel.chatVisibility}"
             app:layout_constraintBottom_toTopOf="@+id/messageET"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:listitem="@layout/my_chat_message" />
+            tools:listitem="@layout/my_chat_message">
+
+        </ListView>
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="?android:attr/listDivider"
+            android:visibility="@{viewModel.chatVisibility}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/chatLV" />
 
         <ProgressBar
             android:id="@+id/progressBar"
             style="?android:attr/progressBarStyle"
             android:layout_width="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/messageET"
             android:layout_height="wrap_content"
             android:indeterminate="true"
             android:indeterminateTint="#673AB7"
             android:indeterminateTintMode="src_atop"
-            android:visibility="@{viewModel.loaderVisibility}" />
+            android:visibility="@{viewModel.loaderVisibility}"
+            app:layout_constraintBottom_toTopOf="@+id/messageET"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
             android:id="@+id/messageET"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/chat_message_bg"
             android:ems="10"
             android:enabled="@{viewModel.isElementsEnabled}"
             android:gravity="start|top"
             android:inputType="textMultiLine"
+            android:padding="10dp"
             android:paddingStart="15dp"
             android:paddingEnd="15dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -68,13 +84,18 @@
             app:layout_constraintStart_toStartOf="parent"
             tools:text="This \nline \nis \nso \ncool" />
 
-        <Button
+        <ImageButton
             android:id="@+id/sendBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/round_button_selector"
+            android:contentDescription="@string/send"
             android:enabled="@{viewModel.isElementsEnabled}"
+            android:padding="15dp"
+            android:src="@drawable/ic_baseline_send_24"
             android:text="@string/send"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/messageET"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/messageET" />
 

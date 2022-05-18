@@ -20,16 +20,14 @@ class ChatViewModel(nickname: String, recipient: User) : ViewModel() {
         viewModelScope.launch {
             _isConnecting.value = true
             withContext(Dispatchers.IO) {
-                connect(nickname, recipient)
+//                connect(nickname, recipient)
+                TcpProvider.openConnection(nickname, recipient.nickname)
             }
 
-            messages.value = (messages.value ?: emptyList()) + Message("Chat started", Message.From.SYSTEM)
-
-            val defer = async {
-                listenToEnemy(messages);
-            }
+            messages.add(Message("Chat started", Message.From.SYSTEM))
+            val defer = async { listenToEnemy() }
             defer.invokeOnCompletion {
-                messages.value = (messages.value ?: emptyList()) + Message("Chat ended", Message.From.SYSTEM)
+                messages.add(Message("Chat ended", Message.From.SYSTEM))
             }
             _isConnecting.value = false
         }
@@ -45,18 +43,26 @@ class ChatViewModel(nickname: String, recipient: User) : ViewModel() {
         return 0
     }
 
-    private suspend fun listenToEnemy(messages: MutableLiveData<List<Message>>) {
+    private suspend fun listenToEnemy() {
         while (!TcpProvider.readSock.isClosedForRead) {
-            TcpProvider.readSock.awaitContent()
-            val str = TcpProvider.readSock.readUTF8Line()
+            val str = TcpProvider.waitString()
             if (str !== null) {
-                messages.value = (messages.value ?: emptyList()) + Message(str, Message.From.ENEMY)
+                messages.add(Message(str, Message.From.ENEMY))
             }
         }
     }
 
     fun sendText(text: String) {
         viewModelScope.launch { withContext(Dispatchers.IO) { TcpProvider.msg(text) } }
-        messages.value = (messages.value ?: emptyList()) + Message(text, Message.From.ME)
+        messages.add(Message(text, Message.From.ME))
     }
+
+    fun closeConnetction() {
+        TcpProvider.closeConnection()
+    }
+
+}
+
+private fun MutableLiveData<List<Message>>.add(message: Message) {
+    value = (value ?: emptyList()) + message
 }

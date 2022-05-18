@@ -1,18 +1,16 @@
 package ru.spbstu.edu.fogezz.moonsoon.chat
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import ru.spbstu.edu.fogezz.moonsoon.databinding.FragmentChatBinding
-import java.security.KeyPairGenerator
-import javax.crypto.Cipher
 
 class ChatFragment : Fragment() {
-
+    private lateinit var viewModel: ChatViewModel
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -23,7 +21,10 @@ class ChatFragment : Fragment() {
         val nickname = args.nickname
         val binding = FragmentChatBinding.inflate(inflater)
         val adapter = ChatAdapter(requireContext())
-        val viewModel: ChatViewModel by viewModels { ChatViewModelFactory(nickname, user) }
+        viewModel = ViewModelProvider(
+            this,
+            ChatViewModelFactory(nickname, user)
+        ).get(ChatViewModel::class.java)
 
         binding.chatLV.adapter = adapter
         binding.viewModel = viewModel
@@ -41,15 +42,19 @@ class ChatFragment : Fragment() {
             }
         }
 
-        binding.sendBtn.setOnClickListener{
+        binding.sendBtn.setOnClickListener {
             val text = binding.messageET.text.toString().trim()
-            if(text.isNotBlank()) {
+            if (text.isNotBlank()) {
                 viewModel.sendText(text)
-//                KeyPairGenerator.getInstance("RSA").genKeyPair()
                 binding.messageET.setText("")
             }
         }
 
         return binding.root
+    }
+
+    override fun onDestroy() {
+        viewModel.closeConnetction()
+        super.onDestroy()
     }
 }
