@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/loginConstraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -25,31 +26,38 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/button_login_connect"
+
         style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="44dp"
-        android:background="#774df2"
+        android:background="@drawable/connect_button_style"
         android:stateListAnimator="@null"
         android:text="@string/connect"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edittext_login_user_id" />
 
-    <TextView
-        android:id="@+id/editTextTextPersonName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:fontFamily="@font/bebas_neue"
-        android:text="@string/app_name"
-        android:textAlignment="center"
-        android:textAllCaps="true"
-        android:textSize="24sp"
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="277dp"
+        android:layout_height="278dp"
         app:layout_constraintBottom_toTopOf="@+id/edittext_login_user_id"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/monsoon_logo" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/lemon"
+        android:text="Monsoon"
+        android:layout_marginBottom="50dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView"
+        app:layout_constraintEnd_toEndOf="@+id/imageView"
+        app:layout_constraintStart_toStartOf="@+id/imageView" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

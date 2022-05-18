@@ -1,5 +1,6 @@
 package ru.spbstu.edu.fogezz.moonsoon.network
 
+import android.util.Base64
 import android.util.Log
 import io.ktor.network.selector.*
 import io.ktor.network.sockets.*
@@ -7,6 +8,7 @@ import io.ktor.utils.io.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
+import java.security.PublicKey
 
 object TcpProvider {
     private const val HOSTNAME = "10.0.2.2"
@@ -36,6 +38,13 @@ object TcpProvider {
         writeUtf8("rcpt: $nickname\n")
     }
 
+    suspend fun sendPKey(pkey: PublicKey) {
+        val b64pkey = Base64.encodeToString(pkey.encoded,  Base64.NO_WRAP)
+        Log.d("PKEY send", "\"$b64pkey\"")
+        writeSock.writeStringUtf8("pkey: ${b64pkey}\n")
+        writeSock.flush()
+    }
+
     suspend fun msg(msg: String) {
         writeUtf8("msg: $msg")
     }
@@ -57,6 +66,16 @@ object TcpProvider {
             readSock.awaitContent()
             val str = readSock.readUTF8Line()
         } while (str != "agent ready")
+    }
+
+    suspend fun awaitKeyExchange(): String {
+        while (true) {
+            readSock.awaitContent()
+            val str = readSock.readUTF8Line()
+            if (str?.startsWith("pkey: ") == true) {
+                return str.substring(6)
+            }
+        }
     }
 
     suspend fun connectClient() {
