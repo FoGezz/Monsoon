@@ -2,7 +2,9 @@ package ru.spbstu.edu.fogezz.moonsoon.chat
 
 import android.os.IBinder
 import android.view.View
+import android.widget.Toast
 import androidx.lifecycle.*
+import io.ktor.utils.io.*
 import kotlinx.coroutines.*
 import ru.spbstu.edu.fogezz.moonsoon.network.TcpProvider
 import ru.spbstu.edu.fogezz.moonsoon.network.User
@@ -20,12 +22,16 @@ class ChatViewModel(nickname: String, recipient: User) : ViewModel() {
             withContext(Dispatchers.IO) {
                 connect(nickname, recipient)
             }
+
+            messages.value = (messages.value ?: emptyList()) + Message("Chat started", Message.From.SYSTEM)
+
+            val defer = async {
+                listenToEnemy(messages);
+            }
+            defer.invokeOnCompletion {
+                messages.value = (messages.value ?: emptyList()) + Message("Chat ended", Message.From.SYSTEM)
+            }
             _isConnecting.value = false
-            messages.value = listOf(
-                Message("Hello there", Message.From.ME),
-            )
-            delay(2000)
-            messages.value = (messages.value ?: emptyList()) + Message("General Kenobi", Message.From.ENEMY)
         }
     }
 
@@ -37,6 +43,16 @@ class ChatViewModel(nickname: String, recipient: User) : ViewModel() {
         TcpProvider.to(recipient.nickname)
         TcpProvider.awaitEstablishing()
         return 0
+    }
+
+    private suspend fun listenToEnemy(messages: MutableLiveData<List<Message>>) {
+        while (!TcpProvider.readSock.isClosedForRead) {
+            TcpProvider.readSock.awaitContent()
+            val str = TcpProvider.readSock.readUTF8Line()
+            if (str !== null) {
+                messages.value = (messages.value ?: emptyList()) + Message(str, Message.From.ENEMY)
+            }
+        }
     }
 
     fun sendText(text: String) {

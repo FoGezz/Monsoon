@@ -31,7 +31,7 @@ class ChatFragment : Fragment() {
 
         viewModel._isConnecting.observe(viewLifecycleOwner) {
             it ?: return@observe
-            if (!it) Toast.makeText(context, "Мы внутри", Toast.LENGTH_SHORT).show()
+            if (!it) Toast.makeText(context, "Чат открыт", Toast.LENGTH_SHORT).show()
         }
 
         viewModel.messages.observe(viewLifecycleOwner) {
